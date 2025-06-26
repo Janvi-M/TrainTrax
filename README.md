@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚄 TrainTrax
 
-## Getting Started
+A modern, full-stack **Railway Reservation System** built with **Next.js**, **React**, and **TypeScript**. This project showcases a modular architecture with **Dijkstra's algorithm** for optimal route finding, secure admin authentication, and an interactive graph-based railway network.
 
-First, run the development server:
+---
+
+## 🌟 Features
+
+- 🚉 **Book train journeys** between major Indian cities
+- 🛡️ **Secure Admin Portal** for network management
+- 📍 **Optimal Route Calculation** using Dijkstra's algorithm
+- 🔁 **Alternative Routes** for flexibility and comparison
+- 🧠 **Dynamic Train Filtering** based on selected routes
+- 🚨 **Fallback Train** ensures booking even when no direct train is available
+- 🌐 **Interactive Network Visualization** using `react-flow-renderer`
+- ⚙️ **Modular Codebase** with clean separation of logic and UI components
+
+---
+
+## 🗂️ Project Structure
+
+```
+app/
+  api/
+    admin/
+      login/         # Admin login API (hardcoded password)
+      graph/         # Get/Update railway graph adjacency matrix
+    routes/
+      find/          # Dijkstra + alternative route API
+  components/
+    admin/           # Admin dashboard for graph editing
+    booking/         # Booking UI for customers
+    ui/              # Shared UI components (Button, Card, etc.)
+  lib/
+    graph.ts         # Dijkstra algorithm, city list, and utilities
+    types.ts         # Shared TypeScript types
+public/              # Static assets
+README.md            # Project overview (this file)
+```
+
+---
+
+## 🧑‍💻 Codebase Overview
+
+### 🖥️ Frontend (React / Next.js)
+
+- `app/page.tsx`: Entry point with navigation to **Customer** and **Admin** portals.
+- `components/booking/BookingFlow.tsx`: Handles user input, route fetching, train selection, and booking confirmation.
+- `components/admin/AdminPanel.tsx`: Enables admin to edit the railway graph.
+- `components/ui/`: Contains reusable UI components for consistent styling.
+
+### 🛠️ Backend (API Routes)
+
+- `api/routes/find/route.ts`: Calculates shortest and alternative paths using Dijkstra's algorithm.
+- `api/admin/login/route.ts`: Handles admin authentication (uses hardcoded password `admin123` for demo).
+- `api/admin/graph/route.ts`: Allows admin to view and update the network graph.
+
+### 🧠 Core Logic (`lib/graph.ts`)
+
+- `cities`: List of supported cities.
+- `defaultRailwayGraph`: Initial adjacency matrix representing city-to-city distances.
+- `dijkstra()`: Computes the shortest path.
+- `findAlternativeRoutes()`: Generates up to two alternative paths by excluding key edges from the best route.
+
+### 📝 TypeScript Types (`lib/types.ts`)
+
+- `RouteResult`: Describes a train route (path, distance, time, cost, type).
+- `BookingDetails`: Captures booking data (user info, train, route).
+
+---
+
+## 🔁 Booking Flow (How It Works)
+
+1. **User inputs** personal details and selects source & destination cities.
+2. **API returns** best route + up to two alternatives using Dijkstra's algorithm.
+3. **Frontend displays** the routes both as a list and as an interactive graph.
+4. **User selects a train**, filtered by the chosen route (with fallback if needed).
+5. **Payment is simulated**, and a confirmation is displayed.
+
+---
+
+## 🔐 Admin Panel
+
+1. **Login** using password: `admin123`.
+2. **Visualize and edit** the adjacency matrix (distance graph between cities).
+3. **Changes reflect** across all route-finding logic.
+
+---
+
+## 🚀 Getting Started
+
+### 📦 Installation
+
+```bash
+# Install dependencies
+npm install
+# or
+yarn install
+```
+
+### 🏃‍♂️ Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💡 Technical Highlights
 
-## Learn More
+| Feature                   | Details                                                                 |
+|-------------------------- |-------------------------------------------------------------------------|
+| 🧮 Dijkstra's Algorithm   | Modular and reusable implementation in `lib/graph.ts`                   |
+| 🧭 Alternative Routes     | Up to two fallback routes using edge removal                            |
+| 🌐 Interactive Visualization | `react-flow-renderer` used to show the full railway network           |
+| 🚊 Train Filtering        | Only trains available for selected routes are shown                     |
+| 🚨 Fallback Booking       | A backup train ensures no route is unbookable                           |
+| 🧱 Modular Design         | Clean separation between logic, UI, and API                             |
+| 🔒 Authentication         | Basic demo login for admin panel (expandable to secure auth)            |
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
